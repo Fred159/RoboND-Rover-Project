@@ -56,7 +56,7 @@ Define a pipeline to process input image.
 ### Result in simulator autonomous mode 
 Rover mapped more than 40%'s of map with 60% accuracy.
 Simulator result proved that algorithm worked well.
-[!(link)]
+[![Rover autonomous mode mapping result](https://github.com/Fred159/RoboND-Rover-Project/blob/master/output/rover%20mapping%20result.png)]
 
 
 ### Problem
