@@ -1,3 +1,71 @@
+## Search and Sample Return Project
+This notebook contains the functions from the lesson and provides the scaffolding from Udacity. Here is the steps.
+
+1. First,just run each of the cells in the notebook, examine the code and the results of each.
+2. Run the simulator in "Training Mode" and record some data.
+3. Change the data directory path (2 cells below) to be the directory where I saved data
+4 Test out the functions provided on data
+5. Write new functions (or modify existing ones) to report and map out detections of obstacles and rock samples (yellow rocks)
+6. Populate the process_image() function with the appropriate steps/functions to go from a raw image to a worldmap.
+7. Run the cell that calls process_image() using moviepy functions to create video output
+8. Modify perception.py and decision.py to allow rover to navigate and map in autonomous mode
+
+### Color Thresholding
+1. Define the color thresholding function from the lesson and apply it to the warped image
+
+2. For obstacles, invert color selection that used to detect ground pixels. Because obstacle's color is dark, it can be detected by using the color threshold. Navigatable pixel is bigger than the threshold, the obstacle pixel is under the threshold.
+
+3. For rocks, a lower and upper boundary in color selection to be more specific about choosing colors. Rock's color is different from obstacle and navigatable area. Rock is yellow. So using the cv2.inrange function can detect rock perfectly.
+
+（cv2 read image from BGR format~）
+
+### Coordinate Transformations
+Define the functions used to do coordinate transforms and apply them to an image. Functions referenced to Udacity's code.
+
+1. 'rover_coords' is to convert image coordinate to rover coordinate.
+2. 'to_polar_coords' is to convert pixel coordinate to radial coordinate in rover coordinate.
+3. 'rotate_pix' is to convert rover's coordinate into world coordinate. Rotate the pixels coordinate same with world coordinate.
+4. 'translate_pix' is to conver rover's coordinate into world coordinate. The difference between 'rotate_pix' is that 'translate_pix' mainly convert(translate) origin point of coordinate.
+5. 'pix_to_world' is combine the 'rotate_pix' and 'translate_pix' function.
+6. distance and angle of each pixel are calculated by using the atan2(y,x) function in 'to_polar_coords' function.
+7. Finally, the rover's heading angle is decided by mean of angles of pixels.
+
+### Read in saved data and ground truth map of the world
+Using pandas read pre-saved log.csv file. With this step, algorithm can read matched image file and rover's state. Databucket class has below attributes.
+
+images
+xpos : x position
+ypos : y position
+yaw : vehicle yaw angle
+count
+worldmap
+ground_truth
+So algorithm can communication(read data) with pre-saved files.
+
+### Process stored images
+Define a pipeline to process input image.
+
+1. Prspective transform(source and destination points define and using cv2.getPerspectiveTransform function to realize perspective.
+2. Apply color threshold to extract different targets. Three targets are obstacle, rock, navigatable region.
+3. Convert color threshold images into rover coordinate. This step is to extracting rover's heading angle. Actually , we don't have to convert rover's coordinate that like 'rover_coords' function defined.( y is in [-160,160]) The y axis also can be y= [0,320]. But in next algorith, it uses 'atan2' function to extract rover's angle. 'atan2''s range is in [-pi , pi] . It is very convinient to extact rover's angle.
+4. By using 'to_polar_coords' , distance and angle's can be extracted. Here, 'atan2' function is used to extract angles. Distance is calculated by using pixels' position. Obstacle, rock, navigatable region are translate into polar coordinate.
+5. Now, we know the distance and angle of obstacle,rock and navigatable region. But it is still in pixel space. So this step, we use the rover's position, pixel position, angle and scale, mapping data into world coordinate. Especially, scale is a main parameter. It decides if correct proportion is used.
+6. Then we get the obstacle map in world coordinate, rock map in world coordinate and navigatable area in world coordinate.
+7. Save obstacle, rock, navigatable region map into world map. Then we can update these information into world map. This step is map update. This step is the final step of vision based SLAM.
+
+### Result in simulator autonomous mode 
+Rover mapped more than 40%'s of map with 60% accuracy.
+Simulator result proved that algorithm worked well.
+[!(link)]
+
+
+### Problem
+1. Rover turn cycle in a specify scenario. So how to make rover jump out of this circle is a problem.
+2. Rover's steering control is not good enough. It always bounce and not stable.
+3. Decision making part still needs improvement in high level decision.
+
+------------------------------------------------------------------------------------------------------------------------------------
+
 [//]: # (Image References)
 [image_0]: ./misc/rover_image.jpg
 [![Udacity - Robotics NanoDegree Program](https://s3-us-west-1.amazonaws.com/udacity-robotics/Extra+Images/RoboND_flag.png)](https://www.udacity.com/robotics)
