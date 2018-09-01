@@ -52,6 +52,12 @@ Define a pipeline to process input image.
 5. Now, we know the distance and angle of obstacle,rock and navigatable region. But it is still in pixel space. So this step, we use the rover's position, pixel position, angle and scale, mapping data into world coordinate. Especially, scale is a main parameter. It decides if correct proportion is used.
 6. Then we get the obstacle map in world coordinate, rock map in world coordinate and navigatable area in world coordinate.
 7. Save obstacle, rock, navigatable region map into world map. Then we can update these information into world map. This step is map update. This step is the final step of vision based SLAM.
+### decision.py
+In ordet to make decision when rover stucked, I added Rover.stucked time into Rover classs.
+                    if Rover.throttle >= 0 and Rover.stucked_time > 0.5:
+                        Rover.throttle = - Rover.throttle_set
+                        Rover.steer = -15 # Could be more clever here about which way to turn\
+with this step, rover can get out from stucked point.
 
 ### Result in simulator autonomous mode 
 Rover mapped more than 40%'s of map with 60% accuracy.
