@@ -54,9 +54,9 @@ Define a pipeline to process input image.
 7. Save obstacle, rock, navigatable region map into world map. Then we can update these information into world map. This step is map update. This step is the final step of vision based SLAM.
 ### decision.py
 In ordet to make decision when rover stucked, I added Rover.stucked time into Rover classs.
-                    if Rover.throttle >= 0 and Rover.stucked_time > 0.5:
-                        Rover.throttle = - Rover.throttle_set
-                        Rover.steer = -15 # Could be more clever here about which way to turn\
+1. if Rover.throttle >= 0 and Rover.stucked_time > 0.5:
+2. Rover.throttle = - Rover.throttle_set
+3. Rover.steer = -15 # Could be more clever here about which way to turn
 with this step, rover can get out from stucked point.
 
 ### Result in simulator autonomous mode 
